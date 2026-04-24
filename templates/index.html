@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Attendance Dashboard</title>
+
+    <!-- ✅ REQUIRED for mobile -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            font-size: 15px;
+        }
+
+        .dashboard-card {
+            border-radius: 15px;
+        }
+
+        .action-btn {
+            font-size: 16px;
+            padding: 18px;
+            border-radius: 12px;
+        }
+
+        /* Mobile improvements */
+        @media (max-width: 768px) {
+
+            .container {
+                margin-top: 20px !important;
+            }
+
+            h1 {
+                font-size: 22px;
+            }
+
+            .action-btn {
+                font-size: 15px;
+                padding: 16px;
+            }
+
+            .row {
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-light">
+
+<div class="container">
+
+    <!-- HEADER -->
+    <div class="card shadow p-4 text-center dashboard-card mt-4">
+        <h1>📊 Smart Attendance</h1>
+        <p class="text-muted mb-0">Face Recognition System</p>
+    </div>
+
+    <!-- ACTION BUTTONS -->
+    <div class="row mt-4">
+
+        <div class="col-12 col-md-4">
+            <a href="/register" class="btn btn-primary w-100 action-btn shadow-sm">
+                👤 Register Face
+            </a>
+        </div>
+
+        <div class="col-12 col-md-4">
+            <a href="/upload" class="btn btn-success w-100 action-btn shadow-sm">
+                📸 Upload Crowd
+            </a>
+        </div>
+
+        <div class="col-12 col-md-4">
+            <a href="/attendance" class="btn btn-dark w-100 action-btn shadow-sm">
+                📋 View Attendance
+            </a>
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

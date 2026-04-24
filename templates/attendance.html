@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Attendance</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            font-size: 14px;
+        }
+
+        /* Scroll container */
+        .table-container {
+            overflow-x: auto;
+            position: relative;
+        }
+
+        table {
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+
+        /* Make date columns smaller */
+        table th, table td {
+            min-width: 55px;
+            height: 65px;
+            font-size: 13px;
+            vertical-align: middle;
+        }
+
+        table td small {
+            display: block;
+            font-size: 11px;
+            opacity: 0.9;
+        }
+
+        /* 🔥 STICKY NAME COLUMN */
+        .sticky-col {
+            position: sticky;
+            left: 0;
+            z-index: 3;
+            background: white;
+        }
+
+        .sticky-header {
+            position: sticky;
+            left: 0;
+            z-index: 4;
+            background: #212529;
+            color: white;
+        }
+
+        /* Name column width */
+        .name-cell {
+            min-width: 160px;
+        }
+
+        /* Fix overlapping borders */
+        td.sticky-col {
+            border-right: 2px solid #dee2e6;
+        }
+
+        th.sticky-header {
+            border-right: 2px solid #dee2e6;
+        }
+
+        .nav-tabs .nav-link.active {
+            background-color: #0d6efd;
+            color: white;
+        }
+
+        /* Mobile */
+        @media (max-width: 768px) {
+
+            body {
+                font-size: 13px;
+            }
+
+            table th, table td {
+                min-width: 50px;
+                height: 55px;
+                font-size: 12px;
+            }
+
+            .name-cell {
+                min-width: 140px;
+            }
+
+            .top-bar {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .top-bar a {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-light">
+
+<div class="container-fluid mt-3">
+
+    <!-- TOP BAR -->
+    <div class="d-flex justify-content-between align-items-center mb-3 top-bar flex-wrap">
+        <a href="/" class="btn btn-primary">⬅ Dashboard</a>
+        <a href="/download-excel" class="btn btn-success">Download</a>
+    </div>
+
+    <!-- TABS -->
+    <ul class="nav nav-tabs flex-nowrap overflow-auto">
+        {% for group, names in groups.items() %}
+        <li class="nav-item">
+            <button class="nav-link {% if loop.first %}active{% endif %}"
+                    data-bs-toggle="tab"
+                    data-bs-target="#tab{{ loop.index }}">
+                {{ group }}
+            </button>
+        </li>
+        {% endfor %}
+    </ul>
+
+    <div class="tab-content mt-3">
+
+        {% for group, names in groups.items() %}
+        <div class="tab-pane fade {% if loop.first %}show active{% endif %}" id="tab{{ loop.index }}">
+
+            <div class="table-container">
+
+                <table class="table table-bordered text-center bg-white">
+
+                    <thead class="table-dark">
+                        <tr>
+                            <!-- 🔥 STICKY HEADER -->
+                            <th class="sticky-header name-cell">Name</th>
+
+                            {% for d in dates %}
+                            <th>{{ d }}</th>
+                            {% endfor %}
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                    {% for name in names %}
+                    <tr>
+
+                        <!-- 🔥 STICKY NAME -->
+                        <td class="fw-bold sticky-col name-cell">
+                            {{ name }}
+
+                            <div class="mt-1">
+                                <a href="/edit-user/{{ name|urlencode }}" class="btn btn-sm btn-outline-primary">✏</a>
+                                <a href="/delete-user/{{ name|urlencode }}"
+                                   class="btn btn-sm btn-outline-danger"
+                                   onclick="return confirm('Delete this user?')">🗑</a>
+                            </div>
+                        </td>
+
+                        <!-- ATTENDANCE -->
+                        {% for d in dates %}
+                            {% set val = attendance[name][d] %}
+                            <td class="
+                                {% if val.status == 'GREEN' %}bg-success text-white
+                                {% elif val.status == 'ORANGE' %}bg-warning text-dark
+                                {% else %}bg-danger text-white
+                                {% endif %}
+                            ">
+
+                                <div class="fw-bold">
+                                    {% if val.status == "GREEN" %}✔
+                                    {% elif val.status == "ORANGE" %}⏰
+                                    {% else %}✖
+                                    {% endif %}
+                                </div>
+
+                                <small>{{ val.time }}</small>
+
+                            </td>
+                        {% endfor %}
+
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+        {% endfor %}
+
+    </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+setInterval(() => {
+    window.location.reload();
+}, 10000);
+</script>
+
+</body>
+</html>

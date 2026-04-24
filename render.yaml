@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: attendance-system
+    runtime: python
+    buildCommand: |
+      apt-get update
+      apt-get install -y cmake
+      pip install -r requirements.txt
+    startCommand: gunicorn app:app
