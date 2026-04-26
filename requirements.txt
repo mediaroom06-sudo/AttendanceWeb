@@ -1,7 +1,8 @@
 flask
+numpy
+pillow
+opencv-python-headless
 face_recognition==1.3.0
 dlib-bin
-numpy
 openpyxl
 gunicorn
-pillow
